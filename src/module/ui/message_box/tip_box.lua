@@ -2,8 +2,6 @@
 	提示框
 --]]
 
-local schedule = require("framework.scheduler")
-
 local labelList = {}
 local container = nil
 

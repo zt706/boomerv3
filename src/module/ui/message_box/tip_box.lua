@@ -4,132 +4,87 @@
 
 local schedule = require("framework.scheduler")
 
-local TipBox = {}
+local labelList = {}
+local container = nil
 
-TipBox.init = function()
-	TipBox.list = {}
-	TipBox.removeList = {}
-	TipBox.handleList = {}
-	TipBox.container = nil
-	TipBox.containerWidth = 0
-	TipBox.containerHeight = 0
+local release = function(scene)
+	labelList = {}
+
+	if container then
+		container:stopAllActions()
+		container:removeFromParent()
+		container = nil
+	end
 end
-TipBox.init()
 
-TipBox.remove = function()
-	if table.nums(removeList) then
+EventMgr.registerEvent(EventConst.SCENE_EXIT, release, EventConst.PRIO_LOW)
+
+local remove = function()
+	if #labelList == 0 then
 		return
 	end
 
-	table.remove(TipBox.list, 1)
+	local label = table.remove(labelList, 1)
+	label:removeFromParent()
 
-	for i, v in ipairs(TipBox.handleList) do
-		if i == #TipBox.handleList and #TipBox.handleList ~= 1 then
-			return
-		end
-
-		local handle = table.remove(TipBox.handleList, 1)
-		schedule.unscheduleGlobal(handle)
+	if #labelList == 0 then
+		container:removeFromParent()
+		container = nil
+		return 
 	end
 
-	for i, v in ipairs(TipBox.removeList) do
-		if i == #TipBox.removeList and #TipBox.removeList ~= 1 then
-			return
-		end
-
-		local item = table.remove(TipBox.removeList, 1)
-		item:removeFromParentAndCleanup(true)
-	end
-
-	if #TipBox.removeList == 0 then
-		table.remove(TipBox.handleList, 1)
-		table.remove(TipBox.list, 1)
-
-		TipBox.container:setVisible(false)
-		TipBox.container:removeFromParentAndCleanup(true)
-		TipBox.container = nil
-
-		return
-	end
-
+	-- 还剩下一个label，延迟0.5秒再清楚
 	local actions = transition.sequence({
-		CCDelayTime:create(0.5),
-		CCCallFuncN:create(function()
-			table.remove(TipBox.handleList, 1)
-			table.remove(TipBox.list, 1)
-			table.remove(TipBox.removeList, 1)
+		cc.DelayTime:create(0.5),
+		cc.CallFunc:create(function()
+			table.remove(labelList, 1)
 
-			TipBox.container:removeFromParentAndCleanup(true)
-			TipBox.container = nil
+			container:removeFromParent()
+			container = nil
 		end)
 	})
 
-	TipBox.container:runAction(actions)
+	container:runAction(actions)
 end
 
-TipBox.checkCount = function()
-	if table.nums(TipBox.list) < 2 then
+local checkCount = function()
+	if #labelList < 2 then
 		return
 	end
 
-	local handle = table.remove(TipBox.handleList, 1)
-	schedule.unscheduleGlobal(handle)
-
-	local item = table.remove(TipBox.list, 1)
-	item:removeFromParentAndCleanup(true)
+	local label = table.remove(labelList, 1)
+	label:removeFromParent()
 end
 
-TipBox.deal = function()
-	if table.nums(TipBox.list) == 0 then
+local deal = function()
+	if table.nums(labelList) == 0 then
 		return
 	end
 
-	table.insert(TipBox.removeList, TipBox.list[1])
-
-	local label = list[1]
-	if not label.actFadeout then
-		transition.fadeOut(label, {time = 1, onComplete = TipBox.remove})
-		TipBox.actFadeout = true
-	end
+	transition.fadeOut(labelList[1], {time = 1, onComplete = remove})
 end
 
-TipBox.repos = function()
-	if #TipBox.list == 1 then
-		TipBox.list[1]:setPosition(0, 15)
-		TipBox.list[1]:runAction(CCMoveBy:create(1, cc.p(0, 0)))
+local repos = function()
+	if #labelList == 1 then
+		labelList[1]:setPosition(0, 15)
+		labelList[1]:runAction(cc.MoveBy:create(1, cc.p(0, 0)))
+		return
 	end
 
-	for k, v in pairs(TipBox.list) do
-		if k == 1 then
-			v:runAction(CCMoveBy:create(0.3, cc.p(0, (#TipBox.list - k) * 15 + 10)))
-		elseif k == 2 then
-			v:runAction(CCMoveBy:create(0.2, cc.p(0, (#TipBox.list - k) * 15 + 15)))
-		end
-	end
+	-- 一次最多就处理2个label
+	labelList[1]:runAction(cc.MoveBy:create(0.3, cc.p(0, 25)))
+	labelList[2]:runAction(cc.MoveBy:create(0.2, cc.p(0, 15)))
 end
 
-TipBox.show = function(text, color)
+showTip = function(text, color)
 	if string.len(text) > 100 then
 		Logger.warn("TipBox: 提示文字太多！！！")
 		return
 	end
 
-	Logger.info("TipBox: " .. text)
+	Logger.info("showTip: " .. text)
 
-	TipBox.checkCount()
-
-	if not color or #color ~= 3 then
-		color = {246, 246, 246}
-	end
-
-	local label = ui.newTTFLabel({
-		text = text,
-		color = cc.c3(color[1], color[2], color[3]),
-		size = 20,
-		align = ui.TEXT_ALIGN_CENTER
-	})
-
-	if not TipBox.container then
+	if not container then
 		local res = "module/ui/message_box/tip_box.png"
 		local bgLeft = display.newSprite(res)
 		local bgRight = display.newSprite(res)
@@ -142,38 +97,33 @@ TipBox.show = function(text, color)
 		bgLeft:setPosition(-bgSize.width, 0)
 		bgRight:setPosition(bgSize.width, 0)
 
-		TipBox.container = display.newNode()
-		TipBox.container:addChild(bgLeft)
-		TipBox.container:addChild(bgRight)
-		TipBox.container:setPosition(display.cx, display.height - 100)
+		container = display.newNode()
+		container:addChild(bgLeft)
+		container:addChild(bgRight)
+		container:setPosition(display.cx, display.height - 100)
 
 		local scene = display.getRunningScene()
-		scene:addChild(TipBox.container)
+		scene:addChild(container)
 	end
+	container:stopAllActions()
 
-	TipBox.container:stopAllActions()
-	TipBox.container.label = label
-	if label then
-		table.insert(TipBox.list, TipBox.container.label)
-		table.insert(TipBox.handleList, schedule.performWithDelayGlobal(deal, 1))
-	end
+	-- 保证最多只有2个label显示
+	checkCount()
 
-	TipBox.container:addChild(label)
+	local label = display.newTTFLabel({
+		text = text,
+		color = color or cc.c3b(246, 246, 246),
+		size = 20,
+		align = cc.TEXT_ALIGN_CENTER,
+	})
+	
+	table.insert(labelList, label)
+	label:performWithDelay(deal, 1)
 
-	TipBox.repos()
+	container:addChild(label)
+
+	-- 重定向label的位置
+	repos()
 end
 
-TipBox.release = function(scene)
-	TipBox.list = {}
-	TipBox.removeList = {}
-	TipBox.handleList = {}
-
-	if TipBox.container then
-		TipBox.container:stopAllActions()
-		TipBox.container = nil
-	end
-end
-
-EventMgr.registerEvent(EventConst.SCENE_EXIT, TipBox.release, EventConst.PRIO_LOW)
-
-return TipBox
+return {showTip = showTip}

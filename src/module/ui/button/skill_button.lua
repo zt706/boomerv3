@@ -45,7 +45,7 @@ end
 SkillButton.startCD = function(self)
 	self.mask:setPercentage(100)
 
-	local action1 = cc.ProgressTo:create(2, 0)
+	local action1 = cc.ProgressTo:create(self.skillInfo.duration, 0)
 	local action2 = cc.CallFunc:create(function()
 		-- 允许技能可以被点击
 		self:setTouchEnabled(true)

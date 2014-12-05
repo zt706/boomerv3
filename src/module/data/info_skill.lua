@@ -4,7 +4,8 @@
 
 local InfoSkillConfig = {
 	["mine"] = {
-		res = "mine.jpg",
+		["res"] = "mine.jpg",
+		["duration"] = 1.0,
 	},
 }
 

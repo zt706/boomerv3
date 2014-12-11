@@ -3,6 +3,16 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
+	-- self:testDebugMap()
+	self:initMapLayer()
+end
+
+function MainScene:initMapLayer()
+	local mapLayer = MapLayer.new()
+	self:addChild(mapLayer)
+end
+
+function MainScene:testDebugMap()
 	DebugDrawer.initDefaultMap()
 	
 	-- local testChar = Character.new("guanyu")

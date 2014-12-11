@@ -25,9 +25,9 @@ Map.createMapPointsInfo = function()
 	for row = 1, MapConst.ROWS do
 		Map.curMapPoints[row] = {}
 		for col = 1, MapConst.COLS do
-			local x = (col - 1) * (MapConst.BLOCK_WIDTH + MapConst.BLOCK_PADDING)
-			local y = (row - 1) * (MapConst.BLOCK_HEIGHT + MapConst.BLOCK_PADDING)
-			
+			local x = (col - 1) * MapConst.BLOCK_WIDTH + MapConst.LEFT_PADDING
+			local y = (row - 1) * MapConst.BLOCK_HEIGHT + MapConst.BOTTOM_PADDING
+
 			Map.curMapPoints[row][col] = {}
 			Map.curMapPoints[row][col].leftBottomPoint = {x = x, y = y}
 			Map.curMapPoints[row][col].centerPoint = {x = x + MapConst.BLOCK_WIDTH / 2, y = y + MapConst.BLOCK_HEIGHT / 2}
@@ -61,9 +61,8 @@ end
 -- 传入坐标，返回该方块的行列
 Map.getRowAndColByPos = function(x, y)
 	local child0 = Map.getLeftBottomPosByRowAndCol(1, 1)
-
-	local row = math.floor((y - child0.y) / (MapConst.BLOCK_HEIGHT + MapConst.BLOCK_PADDING)) + 1
-	local col = math.floor((x - child0.x) / (MapConst.BLOCK_WIDTH + MapConst.BLOCK_PADDING)) + 1
+	local row = math.floor((y - child0.y) / MapConst.BLOCK_HEIGHT) + 1
+	local col = math.floor((x - child0.x) / MapConst.BLOCK_WIDTH) + 1
 
 	if not Map.checkRowAndCol(row, col) then
 		return nil

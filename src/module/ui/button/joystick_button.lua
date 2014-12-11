@@ -17,6 +17,7 @@ JoyStickButton.init = function(self)
 	-- 添加底图
 	self.controlWheel = display.newSprite(JoyStickButtonConst.BACKGROUND_PATH)
 	self.controlWheel:setContentSize(JoyStickButtonConst.WIDTH, JoyStickButtonConst.HEIGHT)
+	self.controlWheel:opacity(120)
 	self:addChild(self.controlWheel)
 
 	-- 添加光圈，光圈坐标位于地图中央

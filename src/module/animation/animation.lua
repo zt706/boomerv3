@@ -44,7 +44,9 @@ Animation.loadAnimation = function(self, animationConfig)
 	end
 
 	if DEBUG == 1 then
-		local debugRect = display.newRect(cc.rect(-MapConst.DEFAULT_BLOCK_WIDTH / 2, -MapConst.DEFAULT_BLOCK_HEIGHT / 2, MapConst.DEFAULT_BLOCK_WIDTH, MapConst.DEFAULT_BLOCK_HEIGHT), {borderColor = cc.c4f(1, 1, 1, 1)})
+		local width = MapConst.BLOCK_WIDTH - AnimationConst.PADDING
+		local height = MapConst.BLOCK_HEIGHT - AnimationConst.PADDING
+		local debugRect = display.newRect(cc.rect(-width / 2, -height / 2, width, height), {borderColor = cc.c4f(1, 1, 1, 1)})
 		self:addChild(debugRect, 100)
 	end
 end

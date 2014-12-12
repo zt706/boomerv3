@@ -45,4 +45,7 @@ AnimationConst.DEFAULT_DIR = AnimationConst.DIR_RIGHT
 
 AnimationConst.ANIMATION_RATE = 1 / 8
 
+-- 这个是为了让动画框，比方格小一点
+AnimationConst.PADDING = 5
+
 return AnimationConst

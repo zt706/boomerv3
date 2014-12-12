@@ -29,7 +29,7 @@ Player.init = function(self, charId)
 
 	self.curDir = AnimationConst.DEFAULT_DIR
 
-	self.size = {width = MapConst.BLOCK_WIDTH, height = MapConst.BLOCK_HEIGHT}
+	self.size = {width = MapConst.BLOCK_WIDTH - AnimationConst.PADDING, height = MapConst.BLOCK_HEIGHT - AnimationConst.PADDING}
 end
 
 --[[

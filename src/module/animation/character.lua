@@ -60,8 +60,8 @@ Character.move = function(self, startPoint, endPoint, params)
 		local xDis = endPoint.x - startPoint.x
 		local yDis = endPoint.y - startPoint.y
 
-		local actionMove = CCMoveBy:create(AnimationConst.ACTION_COST, ccp(xDis, yDis))
-		local actionMoveEnd = CCCallFunc:create(function()
+		local actionMove = cc.MoveBy:create(AnimationConst.ACTION_COST, cc.p(xDis, yDis))
+		local actionMoveEnd = cc.CallFunc:create(function()
 			self.animation:stopAction()
 			moveStep(path, curStep)
 		end)

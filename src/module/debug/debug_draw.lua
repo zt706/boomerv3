@@ -7,7 +7,7 @@ local DebugDrawer = {}
 
 -- 绘制地图的默认参数
 DebugDrawer.initDefaultMap = function()
-	Map.init("1")
+	Map.init("2")
 
 	DebugDrawer.DEFAULT_ROWS = MapConst.ROWS
 	DebugDrawer.DEFAULT_COLS = MapConst.COLS
@@ -40,9 +40,10 @@ DebugDrawer.drawMap = function(params)
 			local y = (row - 1) * blockHeight + MapConst.BOTTOM_PADDING
 			local color = childs[row][col] == 0 and blockPassColor or blockNonPassColor
 
-			local rectNode = display.newRect(cc.rect(0, 0, blockWidth, blockHeight), {fillColor = color, fill = true})
-			rectNode:setTouchEnabled(true)
-			rectNode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+			local touchNode = display.newNode()
+			touchNode:setContentSize(cc.size(blockWidth, blockHeight))
+			touchNode:setTouchEnabled(true)
+			touchNode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
 				Logger.info("点中区域：", event.x, event.y)
 				-- 正在执行动画，则不处理
 				if DebugDrawer.isInMoving then
@@ -66,11 +67,11 @@ DebugDrawer.drawMap = function(params)
 					for i = 1, #astar do
 						local node = mapNode.childs[astar[i].row][astar[i].col]
 						node:setLineColor(randomColor)
-						local action1 = CCDelayTime:create(timecost * i)
-						local action2 = CCScaleTo:create(0.1, 1.2)
-						local action3 = CCDelayTime:create(timecost)
-						local action4 = CCScaleTo:create(0.1, 1.0)
-						local action5 = CCCallFunc:create(function() node:setLineColor(color) end)
+						local action1 = cc.DelayTime:create(timecost * i)
+						local action2 = cc.ScaleTo:create(0.1, 1.2)
+						local action3 = cc.DelayTime:create(timecost)
+						local action4 = cc.ScaleTo:create(0.1, 1.0)
+						local action5 = cc.CallFunc:create(function() node:setLineColor(color) end)
 						
  						node:runAction(transition.sequence({action1, action2, action3, action4, action5}))
 					end
@@ -85,8 +86,11 @@ DebugDrawer.drawMap = function(params)
 				end)
 			end)
 
-			rectNode:align(display.LEFT_BOTTOM, x, y)
-			mapNode:addChild(rectNode)
+			local rectNode = display.newRect(cc.rect(0, 0, blockWidth, blockHeight), {fillColor = color, fill = true})
+			touchNode:addChild(rectNode)
+
+			touchNode:align(display.LEFT_BOTTOM, x, y)
+			mapNode:addChild(touchNode)
 			mapNode.childs = mapNode.childs or {}
 			mapNode.childs[row] = mapNode.childs[row] or {}
 			mapNode.childs[row][col] = rectNode

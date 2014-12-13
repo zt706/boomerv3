@@ -10,27 +10,30 @@ local MapLayer = class("MapLayer", function()
 	return display.newLayer()
 end)
 
-MapLayer.ctor = function(self)
-	Map.init("1")
+MapLayer.ctor = function(self, id)
+	self.mapId = id or "1"
+	
+	-- 初始化地图Model
+	Map.init(self.mapId)
 
 	-- 背景层
-	local backgroundLayer = BackgroundLayer.new()
+	local backgroundLayer = BackgroundLayer.new(self.mapId)
 	self:addChild(backgroundLayer)
 
 	-- 阻挡层
-	local blockLayer = BlockLayer.new()
+	local blockLayer = BlockLayer.new(self.mapId)
 	self:addChild(blockLayer)
 
 	-- 障碍物层
-	local obstacleLayer = ObstacleLayer.new()
+	local obstacleLayer = ObstacleLayer.new(self.mapId)
 	self:addChild(obstacleLayer)
 
 	-- 角色层
-	local characterLayer = CharacterLayer.new()
+	local characterLayer = CharacterLayer.new(self.mapId)
 	self:addChild(characterLayer)
 
 	-- 操纵控制层
-	local operationLayer = OperationLayer.new()
+	local operationLayer = OperationLayer.new(self.mapId)
 	self:addChild(operationLayer)
 
 	operationLayer:setControlNode(characterLayer:getPlayer())

@@ -8,7 +8,9 @@ Map.init = function(mapId)
 	mapId = mapId or "1" -- 默认就是第一张地图
 
 	Map.mapId = mapId
-	Map.blockInfo = InfoMap[mapId] -- 地图阻挡信息
+	Map.blockRes = InfoMap.blockRes -- 方块贴图信息
+	Map.mapConfig = InfoMap[mapId]
+	Map.blockInfo = InfoMap[mapId].blocks -- 地图阻挡信息
 
 	Map.createMapPointsInfo() -- 这个其实应该生成一次就好了，坐标是固定的
 end
@@ -94,6 +96,21 @@ end
 -- 获取地图阻挡信息
 Map.getBlockInfo = function()
 	return Map.blockInfo
+end
+
+-- 获取地图背景图路径
+Map.getBackgroundRes = function()
+	return Map.mapConfig.backgroundRes
+end
+
+-- 获取正常行走方块贴图的路径
+Map.getNormalRes = function()
+	return Map.blockRes[0]
+end
+
+-- 获取阻挡方块贴图的路径
+Map.getBlockRes = function()
+	return Map.blockRes[1]
 end
 
 return Map

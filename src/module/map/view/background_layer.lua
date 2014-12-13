@@ -7,7 +7,7 @@ local BackgroundLayer = class("BackgroundLayer", function()
 end)
 
 BackgroundLayer.ctor = function(self)
-	local background = display.newSprite("module/map/map_1.jpg")
+	local background = display.newSprite(Map.getBackgroundRes())
 	background:pos(display.cx, display.cy)
 
 	local size = background:getContentSize()

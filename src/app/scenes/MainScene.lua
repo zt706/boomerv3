@@ -3,9 +3,9 @@ local MainScene = class("MainScene", function()
 end)
 
 function MainScene:ctor()
-	self:testDebugMap()
+	-- self:testDebugMap()
 	-- self:testSkill()
-	-- self:initMapLayer()
+	self:initMapLayer()
 end
 
 function MainScene:initMapLayer()

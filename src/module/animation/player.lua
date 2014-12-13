@@ -82,7 +82,7 @@ Player.move = function(self, dir)
 		四个块，3个非阻挡，一个阻挡块，这就需要视情况，1/3宽度以内存在于非block区域的话，视作可以行走
 	--]]
 	if #intersectsRects == 2 then
-		if intersectsRects[1].isBlock == 1 or intersectsRects[2].isBlock == 1 then
+		if intersectsRects[1].isBlock or intersectsRects[2].isBlock then
 			Logger.warn("前方是阻挡地图块，不可前行")
 
 			self:stand()
@@ -93,7 +93,7 @@ Player.move = function(self, dir)
 	elseif #intersectsRects == 4 then
 		local blockRects = {}
 		for i = 1, 4 do
-			if intersectsRects[i].isBlock == 1 then
+			if intersectsRects[i].isBlock then
 				table.insert(blockRects, intersectsRects[i])
 			end
 		end

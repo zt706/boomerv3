@@ -17,23 +17,23 @@ MapLayer.ctor = function(self, id)
 	Map.init(self.mapId)
 
 	-- 背景层
-	local backgroundLayer = BackgroundLayer.new(self.mapId)
+	local backgroundLayer = BackgroundLayer.new()
 	self:addChild(backgroundLayer)
 
 	-- 阻挡层
-	local blockLayer = BlockLayer.new(self.mapId)
+	local blockLayer = BlockLayer.new()
 	self:addChild(blockLayer)
 
 	-- 障碍物层
-	local obstacleLayer = ObstacleLayer.new(self.mapId)
+	local obstacleLayer = ObstacleLayer.new()
 	self:addChild(obstacleLayer)
 
 	-- 角色层
-	local characterLayer = CharacterLayer.new(self.mapId)
+	local characterLayer = CharacterLayer.new()
 	self:addChild(characterLayer)
 
 	-- 操纵控制层
-	local operationLayer = OperationLayer.new(self.mapId)
+	local operationLayer = OperationLayer.new()
 	self:addChild(operationLayer)
 
 	operationLayer:setControlNode(characterLayer:getPlayer())

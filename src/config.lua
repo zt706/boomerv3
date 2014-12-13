@@ -8,6 +8,9 @@ DEBUG_FPS = true
 -- dump memory info every 10 seconds
 DEBUG_MEM = false
 
+-- 显示地图上的方块行列号
+DEBUG_MAP = false
+
 -- load deprecated API
 LOAD_DEPRECATED_API = false
 

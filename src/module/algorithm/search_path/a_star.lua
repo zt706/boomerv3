@@ -45,7 +45,7 @@ end
 -- 搜索路径 ,核心代码
 AStar.searchPath = function(self)
 	-- 验证终点是否为阻挡，如果为阻挡，则直接返回空路径
-	if Map.getBlockByRowAndCol(self.endPoint.row, self.endPoint.col) ~= 0 then
+	if Map.getBlockByRowAndCol(self.endPoint.row, self.endPoint.col) then
 		Logger.info("(", self.endPoint.row, ",", self.endPoint.col, ") 是阻挡！！！无法寻路")
 		return nil
 	end

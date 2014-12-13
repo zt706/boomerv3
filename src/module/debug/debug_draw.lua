@@ -9,11 +9,10 @@ local DebugDrawer = {}
 DebugDrawer.initDefaultMap = function()
 	Map.init("1")
 
-	DebugDrawer.DEFAULT_ROWS = MapConst.DEFAULT_ROWS
-	DebugDrawer.DEFAULT_COLS = MapConst.DEFAULT_COLS
-	DebugDrawer.DEFAULT_BLOCK_PADDING = MapConst.DEFAULT_BLOCK_PADDING
-	DebugDrawer.DEFAULT_BLOCK_WIDTH = MapConst.DEFAULT_BLOCK_WIDTH
-	DebugDrawer.DEFAULT_BLOCK_HEIGHT = MapConst.DEFAULT_BLOCK_HEIGHT
+	DebugDrawer.DEFAULT_ROWS = MapConst.ROWS
+	DebugDrawer.DEFAULT_COLS = MapConst.COLS
+	DebugDrawer.DEFAULT_BLOCK_WIDTH = MapConst.BLOCK_WIDTH
+	DebugDrawer.DEFAULT_BLOCK_HEIGHT = MapConst.BLOCK_HEIGHT
 	DebugDrawer.DEFAULT_BLOCK_PASS_COLOR = cc.c4f(0, 1, 0, 0.3)		-- 地图中可以行走方块的颜色
 	DebugDrawer.DEFAULT_BLOCK_NONPASS_COLOR = cc.c4f(1, 0, 0, 0.3)	-- 地图中障碍物方块的颜色
 	DebugDrawer.DEFAULT_MAP = Map.getBlockInfo()
@@ -29,7 +28,6 @@ DebugDrawer.drawMap = function(params)
 	local blockHeight = params.blockHeight or DebugDrawer.DEFAULT_BLOCK_HEIGHT
 	local blockPassColor = params.blockPassColor or DebugDrawer.DEFAULT_BLOCK_PASS_COLOR
 	local blockNonPassColor = params.blockNonPassColor or DebugDrawer.DEFAULT_BLOCK_NONPASS_COLOR
-	local blockPadding = params.blockPadding or DebugDrawer.DEFAULT_BLOCK_PADDING
 	local textOn = params.textOn or true
 	local callback = params.callback or function() end
 
@@ -38,20 +36,21 @@ DebugDrawer.drawMap = function(params)
 	local mapNode = display.newNode()
 	for row = 1, rows do
 		for col = 1, cols do
-			local x = (col - 1) * (blockWidth + blockPadding)
-			local y = (row - 1) * (blockHeight + blockPadding)
+			local x = (col - 1) * blockWidth + MapConst.LEFT_PADDING
+			local y = (row - 1) * blockHeight + MapConst.BOTTOM_PADDING
 			local color = childs[row][col] == 0 and blockPassColor or blockNonPassColor
 
 			local rectNode = display.newRect(cc.rect(0, 0, blockWidth, blockHeight), {fillColor = color, fill = true})
 			rectNode:setTouchEnabled(true)
 			rectNode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+				Logger.info("点中区域：", event.x, event.y)
 				-- 正在执行动画，则不处理
 				if DebugDrawer.isInMoving then
 					return
 				end
 
 				-- 点中的终点为阻挡，则不处理
-				if Map.getBlockByRowAndCol(row, col) ~= 0 then
+				if Map.getBlockByRowAndCol(row, col) then
 					return
 				end
 
@@ -86,7 +85,7 @@ DebugDrawer.drawMap = function(params)
 				end)
 			end)
 
-			display.align(rectNode, display.LEFT_BOTTOM, x, y)
+			rectNode:align(display.LEFT_BOTTOM, x, y)
 			mapNode:addChild(rectNode)
 			mapNode.childs = mapNode.childs or {}
 			mapNode.childs[row] = mapNode.childs[row] or {}
@@ -99,7 +98,7 @@ DebugDrawer.drawMap = function(params)
 		end
 	end
 	
-	display.align(mapNode, display.LEFT_BOTTOM, 0, 0)
+	mapNode:align(display.LEFT_BOTTOM, 0, 0)
 	return mapNode
 end
 
@@ -107,7 +106,7 @@ DebugDrawer.drawText = function(x, y, text, parent, params)
 	params = params or {}
 
 	local label = display.newTTFLabel({text = text, size = 12, color = params.color or display.COLOR_WHITE})
-	display.align(label, display.CENTER, x, y)
+	label:align(display.CENTER, x, y)
 	parent:addChild(label)
 end
 

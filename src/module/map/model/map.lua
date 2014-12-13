@@ -57,7 +57,7 @@ end
 
 -- 传入指定行列，返回该方块的阻挡信息
 Map.getBlockByRowAndCol = function(row, col)
-	return Map.blockInfo[row][col]
+	return (Map.blockInfo[row][col] ~= 0)
 end
 
 -- 传入坐标，返回该方块的行列
@@ -113,4 +113,9 @@ Map.getBlockRes = function()
 	return Map.blockRes[1]
 end
 
+-- 获取障碍物方块贴图的路径，由于障碍物可能有多种，这里就通过传入 id 处理，这个 id 可以通过地图阻挡信息得到
+Map.getObstacleRes = function(id)
+	id = id or 2
+	return Map.blockRes[id]
+end
 return Map

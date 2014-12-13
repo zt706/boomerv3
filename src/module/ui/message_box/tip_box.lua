@@ -88,8 +88,8 @@ showTip = function(text, color)
 		local bgRight = display.newSprite(res)
 		bgRight:setScaleX(-1)
 
-		display.align(bgLeft, display.LEFT_BOTTOM)
-		display.align(bgRight, display.LEFT_BOTTOM)
+		bgLeft:align(display.LEFT_BOTTOM)
+		bgRight:align(display.LEFT_BOTTOM)
 
 		local bgSize = bgLeft:getContentSize()
 		bgLeft:setPosition(-bgSize.width, 0)

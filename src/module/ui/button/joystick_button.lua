@@ -17,7 +17,6 @@ JoyStickButton.init = function(self)
 	-- 添加底图
 	self.controlWheel = display.newSprite(JoyStickButtonConst.BACKGROUND_PATH)
 	self.controlWheel:setContentSize(JoyStickButtonConst.WIDTH, JoyStickButtonConst.HEIGHT)
-	self.controlWheel:opacity(120)
 	self:addChild(self.controlWheel)
 
 	-- 添加光圈，光圈坐标位于地图中央
@@ -26,49 +25,20 @@ JoyStickButton.init = function(self)
 	self:addChild(self.tinyCircle)
 
 	-- 添加4个方向键
-	local x = JoyStickButtonConst.RADIUS
-	local y = JoyStickButtonConst.RADIUS * 2 - JoyStickButtonConst.DIRECTION_BUTTON_HEIGHT / 2
-	self.upButton = self:createDirectionButton(x, y, "up")
-	self.controlWheel:addChild(self.upButton)
-
-	x = JoyStickButtonConst.RADIUS
-	y = JoyStickButtonConst.DIRECTION_BUTTON_HEIGHT / 2
-	self.downButton = self:createDirectionButton(x, y, "down")
-	self.controlWheel:addChild(self.downButton)
-	
-	x = JoyStickButtonConst.DIRECTION_BUTTON_WIDTH / 2
-	y = JoyStickButtonConst.RADIUS
-	self.leftButton = self:createDirectionButton(x, y, "left")
-	self.controlWheel:addChild(self.leftButton)
-	
-	x = JoyStickButtonConst.RADIUS * 2 - JoyStickButtonConst.DIRECTION_BUTTON_WIDTH / 2
-	y = JoyStickButtonConst.RADIUS
-	self.rightButton = self:createDirectionButton(x, y, "right")
-	self.controlWheel:addChild(self.rightButton)
-
-	local directionButtonSize = {width = JoyStickButtonConst.DIRECTION_BUTTON_WIDTH, height = JoyStickButtonConst.DIRECTION_BUTTON_HEIGHT}
-	self.directionButtonInfos = {
-		{
-			button = self.upButton,
-			rect = cc.rect(self.upButton:convertToWorldSpace(cc.p(0, 0)), directionButtonSize.width, directionButtonSize.height),
-			degrees = {left = 45, right = 135}, -- 角度区间 [left, right)
-		},
-		{
-			button = self.downButton,
-			rect = cc.rect(self.downButton:convertToWorldSpace(cc.p(0, 0)), directionButtonSize.width, directionButtonSize.height),
-			degrees = {left = -135, right = -45},
-		},
-		{
-			button = self.rightButton,
-			rect = cc.rect(self.rightButton:convertToWorldSpace(cc.p(0, 0)), directionButtonSize.width, directionButtonSize.height),
-			degrees = {left = -45, right = 45},
-		},
-		{
-			button = self.leftButton,
-			rect = cc.rect(self.leftButton:convertToWorldSpace(cc.p(0, 0)), directionButtonSize.width, directionButtonSize.height),
-			degrees = {left = 135, right = -135}, -- 这里原本应该是135～-135之间，不过由于这个区间不好计算，好在这里是最好一个
-		},
+	local directionButtons = {
+		{name = "up", degrees = {left = 45, right = 135}}, -- 角度区间 [left, right)
+		{name = "down", degrees = {left = -135, right = -45}},
+		{name = "right", degrees = {left = -45, right = 45}},
+		{name = "left", degrees = {left = 135, right = -135}}, -- 这里原本应该是135～-135之间，不过由于这个区间不好计算，好在这里是最后一个
 	}
+	
+	self.directionButtonInfos = {}
+	for _, button in ipairs(directionButtons) do
+		self.directionButtonInfos[#self.directionButtonInfos + 1] = {
+			button = self:createDirectionButton(button.name),
+			degrees = button.degrees,
+		}
+	end
 
 	self:setTouchEnabled(true)
 	-- 默认吞噬事件，地图层不接受点击
@@ -98,15 +68,13 @@ JoyStickButton.swallowEnabled = function(self, enabled)
 	self:setTouchSwallowEnabled(enabled)
 end
 
-JoyStickButton.createDirectionButton = function(self, x, y, dir)
-	local directionButton = display.newRect(cc.rect(-JoyStickButtonConst.DIRECTION_BUTTON_WIDTH / 2, -JoyStickButtonConst.DIRECTION_BUTTON_HEIGHT / 2, JoyStickButtonConst.DIRECTION_BUTTON_WIDTH, JoyStickButtonConst.DIRECTION_BUTTON_HEIGHT), {borderColor = cc.c4f(1, 0, 0, 1)})
-	directionButton:setPosition(x, y)
+JoyStickButton.createDirectionButton = function(self, dir)
+	local directionButton = {}
 
 	directionButton.onPressed = function()
 		if not directionButton.longTouchHander then
 			directionButton.startTime = socket.gettime()
 			directionButton.longTouchHander = scheduler.scheduleUpdateGlobal(function()
-				directionButton:setColor(JoyStickButtonConst.DEBUG_HIGHLIGHT_COLOR)
 				self:move(dir)
 			end)
 		end
@@ -118,8 +86,6 @@ JoyStickButton.createDirectionButton = function(self, x, y, dir)
 			scheduler.unscheduleGlobal(directionButton.longTouchHander)
 			directionButton.longTouchHander = nil
 		end
-
-		directionButton:setColor(JoyStickButtonConst.DEBUG_NORMAL_COLOR)
 
 		-- 添加一个延时，解决短按的情况下，控制对象漂移情况，允许做一个move动画的时间
 		local time = 0

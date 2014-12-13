@@ -33,10 +33,15 @@ SkillButton.init = function(self, skillId, callback)
 	self:addChild(self.mask)
 
 	self:setTouchEnabled(true)
+	self.isTouching = false -- 设置被点击以后不允许再次被点击
 	self:addNodeEventListener(cc.NODE_TOUCH_EVENT, function()
-		self.callback() -- 执行回调
+		if self.isTouching then
+			return
+		end
 
-		self:setTouchEnabled(false) -- 不允许被点击
+		self.isTouching = true -- 不允许被点击
+
+		self.callback() -- 执行回调
 
 		self:startCD() -- 开始冷却
 	end)
@@ -48,7 +53,7 @@ SkillButton.startCD = function(self)
 	local action1 = cc.ProgressTo:create(self.skillInfo.duration, 0)
 	local action2 = cc.CallFunc:create(function()
 		-- 允许技能可以被点击
-		self:setTouchEnabled(true)
+		self.isTouching = false
 	end)
 	self.mask:runAction(transition.sequence({action1, action2}))
 end

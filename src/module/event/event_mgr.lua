@@ -44,7 +44,7 @@ EventMgr.registerEvent = function(eventType, callback, priority, ...)
 	end)
 end
 
-EventMgr.unRegisterEvent = function(eventType, callback)
+EventMgr.unregisterEvent = function(eventType, callback)
 	EventMgr.events = EventMgr.events or {}
 	local eventCallbacks = EventMgr.events[eventType]
 	if not eventCallbacks or #eventCallbacks == 0 then
@@ -101,7 +101,7 @@ EventMgr.hasRegisterEvent = function(eventType, callback)
 end
 
 EventMgr.clearEvent = function(eventType)
-	Logger.debug("\n\n\n clearEvent:", eventType)
+	Logger.debug("\n\n clearEvent:", eventType)
 
 	EventMgr.events = EventMgr.events or {}
 	local eventCallbacks = EventMgr.events[eventType]

@@ -7,9 +7,17 @@ local OperationLayer = class("OperationLayer", function()
 end)
 
 OperationLayer.ctor = function(self)
+	-- 添加操纵杆
 	self.joyStick = JoyStickButton:new()
 	self.joyStick:pos(JoyStickButtonConst.WIDTH / 2, JoyStickButtonConst.HEIGHT / 2)
 	self:addChild(self.joyStick)
+
+	-- 添加技能栏
+	local skillButton = SkillButton.new("mine", function()
+		EventMgr.triggerEvent(EventConst.ADD_MINE)
+	end)
+	skillButton:setPosition(display.right - 100, display.bottom + 100)
+	self:addChild(skillButton)
 end
 
 OperationLayer.setControlNode = function(self, controlNode)

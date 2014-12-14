@@ -91,3 +91,15 @@ table.save = function(t, filename)
 
 	Logger.warn("尚未实现")
 end
+
+-- 清空table表格中所有value为nil的键值对
+table.removeAllNilValue = function(t)
+	local new = {}
+	for _, v in pairs(t) do
+		if v then
+			new[#new + 1] = v
+		end
+	end
+
+	return new
+end

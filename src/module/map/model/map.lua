@@ -118,4 +118,61 @@ Map.getObstacleRes = function(id)
 	id = id or 2
 	return Map.blockRes[id]
 end
+
+--[[
+	获取指定坐标周围上下左右和自己5个方块
+	needBlock表示是否需要返回阻挡方块，默认不返回
+	depth表示深度，默认为1，表示取上下左右几个方块（2为各取2个），即一共返回最多9个方块
+	这里一定会返回自己那个方块，无论是不是阻挡
+--]]
+Map.getAroundBlockByPos = function(x, y, needBlock, depth)
+	needBlock = needBlock and true or false
+	depth = depth or 1
+
+	local blocks = {}
+	local row, col = Map.getRowAndColByPos(x, y)
+	blocks[0] = {row = row, col = col}
+	if not needBlock then
+		if Map.blockInfo[row + 1][col] ~= 1 then
+			blocks[#blocks + 1] = {row = row + 1, col = col}
+		end
+
+		if Map.blockInfo[row - 1][col] ~= 1 then
+			blocks[#blocks + 1] = {row = row - 1, col = col}
+		end
+
+		if Map.blockInfo[row][col + 1] ~= 1 then
+			blocks[#blocks + 1] = {row = row, col = col + 1}
+		end
+
+		if Map.blockInfo[row][col - 1] ~= 1 then
+			blocks[#blocks + 1] = {row = row, col = col - 1}
+		end		
+	else
+		blocks[1] = {row = row + 1, col = col}
+		blocks[2] = {row = row - 1, col = col}
+		blocks[3] = {row = row, col = col + 1}
+		blocks[4] = {row = row, col = col - 1}
+	end
+
+	return blocks
+end
+
+-- 重置这里的阻挡信息
+Map.resetBlockByRowAndCol = function(row, col)
+	Map.blockInfo[row][col] = 0
+end
+
+-- 重置指定方块群的阻挡信息
+Map.resetBlocksByRowsAndCols = function(blocks)
+	for _, v in pairs(blocks) do
+		Map.blockInfo[v.row][v.col] = 0
+	end
+end
+
+-- 设置指定方块为阻挡
+Map.setBlockByRowAndCol = function(row, col)
+	Map.blockInfo[row][col] = 1
+end
+
 return Map

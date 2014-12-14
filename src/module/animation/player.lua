@@ -158,6 +158,9 @@ Player.move = function(self, dir)
 
 	-- 移动
 	self:setPosition(x, y)
+	
+	-- 发射事件，玩家移动
+	EventMgr.triggerEvent(EventConst.PLAYER_MOVE, newBox)
 end
 
 --!! 应该传入一个target

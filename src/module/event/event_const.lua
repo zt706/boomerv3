@@ -16,5 +16,9 @@ EventConst.PRIO_MIDDLE = 5
 EventConst.PRIO_LOW = 1
 
 -- 这里用来扩展游戏里自定义的
+EventConst.ADD_MINE = "addMine"
+EventConst.MINE_BOOM = "mineBoom"
+EventConst.OBSTACLE_BOOM = "obstacleBoom"
+EventConst.PLAYER_MOVE = "playerMove"
 
 return EventConst

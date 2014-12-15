@@ -41,25 +41,36 @@ local echo = function(logLevel, ...)
 	Logger.old_print(Logger.PrefixInfo[logLevel], ...)
 end
 
---[[
-	COLOR 命令是设置默认控制台前景和背景颜色，后面跟的是颜色属性。
-	其中：	0 = 黑色			8 = 灰色
-			1 = 蓝色			9 = 淡蓝色
-			2 = 绿色			A = 淡绿色
-			3 = 湖蓝色		B = 淡浅绿色
-			4 = 红色			C = 淡红色
-			5 = 紫色			D = 淡紫色
-			6 = 黄色			E = 淡黄色
-			7 = 白色			F = 亮白色
-	所以color f1的意思就是将默认控制台前景色设置为亮白色，背景色设置为蓝色。
---]]
+local BACK_COLORS = {}
+local FRONT_COLORS = {}
+
+if device.platform == "windows" then
+	BACK_COLORS = {
+		BLUE = 16,
+		GREEN = 32,
+		RED = 64,
+		WHITE = 112,
+	}
+
+	FRONT_COLORS = {
+		BLACK = 0,
+		BLUE = 1,
+		GREEN = 2,
+		CYAN = 3,
+		RED = 4,
+		YELLOW = 6,
+		WHITE = 7,
+	}
+end
+
 local colorLogLevel = {
-	[Logger.DEBUG]	= {mac = 0, windows = "71"}, -- 白底蓝字
-	[Logger.INFO]	= {mac = 0, windows = "70"}, -- 白底黑字
-	[Logger.WARN]	= {mac = 0, windows = "76"}, -- 白底黄字
-	[Logger.ERROR]	= {mac = 0, windows = "7A"}, -- 白底绿字
-	[Logger.FATAL]	= {mac = 0, windows = "74"}, -- 白底红字
+	[Logger.DEBUG]	= {front = FRONT_COLORS.BLUE, back = BACK_COLORS.WHITE}, -- 白底蓝字
+	[Logger.INFO]	= {front = FRONT_COLORS.CYAN, back = BACK_COLORS.WHITE}, -- 白底青字
+	[Logger.WARN]	= {front = FRONT_COLORS.YELLOW, back = BACK_COLORS.WHITE}, -- 白底黄字
+	[Logger.ERROR]	= {front = FRONT_COLORS.GREEN, back = BACK_COLORS.WHITE}, -- 白底绿字
+	[Logger.FATAL]	= {front = FRONT_COLORS.RED, back = BACK_COLORS.WHITE}, -- 白底红字
 }
+
 local echoWithColorBegin = function(logLevel)
 	if not LOG_COLOR_ON then
 		return
@@ -67,10 +78,28 @@ local echoWithColorBegin = function(logLevel)
 
 	if device.platform == "mac" then
 		-- mac 目前无法控制控制台颜色显示
-		-- echo -e "\033[36m 天蓝字 \033[0m"
 	elseif device.platform == "windows" then
-		-- 验证不行
-		-- os.execute("color " .. colorLogLevel[logLevel].windows)
+		-- 指定传入字体颜色为front，背景色为back
+		-- Utils.setConsoleColor(colorLogLevel[logLevel].front, colorLogLevel[logLevel].back)
+
+		--[[
+			windows下的实现应为如下：
+				int setConsoleColor(lua_State *L)
+				{
+					int fontColor = lua_tointeger(L, 1);
+					int backgroundColor = lua_tointeger(L, 2);
+					lua_pop(L, 2);
+
+				#ifdef WIN32
+					HANDLE hStdout=GetStdHandle(STD_OUTPUT_HANDLE); 
+				    SetConsoleTextAttribute(hStdout, fontColor | backgroundColor);
+				#endif
+
+					lua_pushinteger(L, fontColor);
+					return 1;
+				}
+
+		--]]
 	end
 end
 
@@ -82,9 +111,8 @@ local echoWithColorEnd = function(logLevel)
 	if device.platform == "mac" then
 		-- mac 目前无法控制控制台颜色显示
 	elseif device.platform == "windows" then
-		-- 验证不行
 		-- 还原控制台输出为白底黑字
-		-- os.execute("color 70")
+		-- Utils.setConsoleColor(FRONT_COLORS.BLACK, BACK_COLORS.WHITE)
 	end
 end
 

@@ -30,7 +30,7 @@ BasicMine.boom = function(self)
 
 	self:runAction(cc.RepeatForever:create(sequence))
 
-	--!! 这里需要注册一个事件监听，监听主角移动的特效，如果主角移动以后，当完全离开这个方块，方块的阻挡就会变为1
+	-- 这里需要注册一个事件监听，监听主角移动的特效，如果主角移动以后，当完全离开这个方块，方块的阻挡就会变为1
 	-- 当爆炸以后，这个方块阻挡会再次清零
 	local callback = handler(self, self.montiorPlayerMove)
 	EventMgr.registerEvent(EventConst.PLAYER_MOVE, callback)
@@ -66,7 +66,7 @@ BasicMine.boom = function(self)
 		-- 障碍物就清楚掉
 		EventMgr.triggerEvent(EventConst.OBSTACLE_BOOM, blocks)
 
-		--!! 反注册监听事件
+		-- 反注册监听事件
 		EventMgr.unregisterEvent(EventConst.PLAYER_MOVE, callback)
 
 		-- 方块阻挡全部清零

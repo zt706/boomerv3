@@ -42,5 +42,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-frameworks/*
+frameworks/cocos2d-x
+frameworks/runtime-src/Classes/quick-src
+frameworks/runtime-src/Classes/runtime
+frameworks/runtime-src/proj.*
 runtime/*

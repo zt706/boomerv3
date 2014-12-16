@@ -80,7 +80,7 @@ local echoWithColorBegin = function(logLevel)
 		-- mac 目前无法控制控制台颜色显示
 	elseif device.platform == "windows" then
 		-- 指定传入字体颜色为front，背景色为back
-		-- Utils.setConsoleColor(colorLogLevel[logLevel].front, colorLogLevel[logLevel].back)
+		zw.ZWUtils:setConsoleColor(colorLogLevel[logLevel].front, colorLogLevel[logLevel].back)
 
 		--[[
 			windows下的实现应为如下：
@@ -112,7 +112,7 @@ local echoWithColorEnd = function(logLevel)
 		-- mac 目前无法控制控制台颜色显示
 	elseif device.platform == "windows" then
 		-- 还原控制台输出为白底黑字
-		-- Utils.setConsoleColor(FRONT_COLORS.BLACK, BACK_COLORS.WHITE)
+		zw.ZWUtils:setConsoleColor(FRONT_COLORS.BLACK, BACK_COLORS.WHITE)
 	end
 end
 

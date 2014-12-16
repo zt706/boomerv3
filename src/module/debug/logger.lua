@@ -46,6 +46,7 @@ local FRONT_COLORS = {}
 
 if device.platform == "windows" then
 	BACK_COLORS = {
+		BLACK = 8,
 		BLUE = 16,
 		GREEN = 32,
 		RED = 64,
@@ -64,11 +65,11 @@ if device.platform == "windows" then
 end
 
 local colorLogLevel = {
-	[Logger.DEBUG]	= {front = FRONT_COLORS.BLUE, back = BACK_COLORS.WHITE}, -- 白底蓝字
-	[Logger.INFO]	= {front = FRONT_COLORS.CYAN, back = BACK_COLORS.WHITE}, -- 白底青字
-	[Logger.WARN]	= {front = FRONT_COLORS.YELLOW, back = BACK_COLORS.WHITE}, -- 白底黄字
-	[Logger.ERROR]	= {front = FRONT_COLORS.GREEN, back = BACK_COLORS.WHITE}, -- 白底绿字
-	[Logger.FATAL]	= {front = FRONT_COLORS.RED, back = BACK_COLORS.WHITE}, -- 白底红字
+	[Logger.DEBUG]	= {front = FRONT_COLORS.BLUE, back = BACK_COLORS.BLACK}, -- 白底蓝字
+	[Logger.INFO]	= {front = FRONT_COLORS.CYAN, back = BACK_COLORS.BLACK}, -- 白底青字
+	[Logger.WARN]	= {front = FRONT_COLORS.YELLOW, back = BACK_COLORS.BLACK}, -- 白底黄字
+	[Logger.ERROR]	= {front = FRONT_COLORS.GREEN, back = BACK_COLORS.BLACK}, -- 白底绿字
+	[Logger.FATAL]	= {front = FRONT_COLORS.RED, back = BACK_COLORS.BLACK}, -- 白底红字
 }
 
 local echoWithColorBegin = function(logLevel)
@@ -81,25 +82,6 @@ local echoWithColorBegin = function(logLevel)
 	elseif device.platform == "windows" then
 		-- 指定传入字体颜色为front，背景色为back
 		zw.ZWUtils:setConsoleColor(colorLogLevel[logLevel].front, colorLogLevel[logLevel].back)
-
-		--[[
-			windows下的实现应为如下：
-				int setConsoleColor(lua_State *L)
-				{
-					int fontColor = lua_tointeger(L, 1);
-					int backgroundColor = lua_tointeger(L, 2);
-					lua_pop(L, 2);
-
-				#ifdef WIN32
-					HANDLE hStdout=GetStdHandle(STD_OUTPUT_HANDLE); 
-				    SetConsoleTextAttribute(hStdout, fontColor | backgroundColor);
-				#endif
-
-					lua_pushinteger(L, fontColor);
-					return 1;
-				}
-
-		--]]
 	end
 end
 

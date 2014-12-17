@@ -65,11 +65,11 @@ if device.platform == "windows" then
 end
 
 local colorLogLevel = {
-	[Logger.DEBUG]	= {front = FRONT_COLORS.BLUE, back = BACK_COLORS.BLACK}, -- 白底蓝字
-	[Logger.INFO]	= {front = FRONT_COLORS.CYAN, back = BACK_COLORS.BLACK}, -- 白底青字
-	[Logger.WARN]	= {front = FRONT_COLORS.YELLOW, back = BACK_COLORS.BLACK}, -- 白底黄字
-	[Logger.ERROR]	= {front = FRONT_COLORS.GREEN, back = BACK_COLORS.BLACK}, -- 白底绿字
-	[Logger.FATAL]	= {front = FRONT_COLORS.RED, back = BACK_COLORS.BLACK}, -- 白底红字
+	[Logger.DEBUG]	= {front = FRONT_COLORS.BLUE, back = BACK_COLORS.BLACK}, -- 黑底蓝字
+	[Logger.INFO]	= {front = FRONT_COLORS.CYAN, back = BACK_COLORS.BLACK}, -- 黑底青字
+	[Logger.WARN]	= {front = FRONT_COLORS.YELLOW, back = BACK_COLORS.BLACK}, -- 黑底黄字
+	[Logger.ERROR]	= {front = FRONT_COLORS.GREEN, back = BACK_COLORS.BLACK}, -- 黑底绿字
+	[Logger.FATAL]	= {front = FRONT_COLORS.RED, back = BACK_COLORS.BLACK}, -- 黑底红字
 }
 
 local echoWithColorBegin = function(logLevel)

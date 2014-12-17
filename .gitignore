@@ -49,16 +49,5 @@ Temporary Items
 # 忽略文件和目录
 player/res
 player/src
-frameworks/cocos2d-x/build
-frameworks/cocos2d-x/cocos
-frameworks/cocos2d-x/extensions
-frameworks/cocos2d-x/external
-frameworks/cocos2d-x/licenses
-frameworks/cocos2d-x/CHANGELOG
-frameworks/cocos2d-x/README.md
-frameworks/cocos2d-x/tools/bindings-generator
-frameworks/cocos2d-x/tools/missing-tools.txt
-frameworks/runtime-src/Classes/quick-src
-frameworks/runtime-src/Classes/runtime
-frameworks/runtime-src/proj.*
+frameworks/*
 runtime/*

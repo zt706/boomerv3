@@ -57,3 +57,7 @@ frameworks/runtime-src/Classes/quick-src
 frameworks/runtime-src/Classes/runtime
 frameworks/runtime-src/proj.*
 runtime/*
+
+# 保留文件
+!frameworks/cocos2d-x/cocos/scripting/lua-bindings/auto/lua_zwutils_auto.hpp
+!frameworks/cocos2d-x/cocos/scripting/lua-bindings/auto/lua_zwutils_auto.cpp

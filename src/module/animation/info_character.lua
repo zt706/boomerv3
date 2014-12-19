@@ -2,7 +2,7 @@
 	动画配置表
 	暂定样式如下：
 	local animationConfig = {
-		["zw1"] = {
+		["enemy1"] = {
 			parts = {
 				"body0101",
 				"head0101",
@@ -25,7 +25,7 @@
 --]]
 
 local AnimationConfig = {
-	["zw1"] = {
+	["enemy1"] = {
 		parts = {
 			"body0101",
 			"head0101",

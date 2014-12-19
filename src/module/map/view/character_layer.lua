@@ -14,11 +14,22 @@ CharacterLayer.ctor = function(self)
 	self.player:move("left")
 	self:addChild(self.player)
 
-	-- 注册炸弹事件，这里先全清一边ADD_MINE事件，因为不打算执行反注册行为
-	EventMgr.clearEvent(EventConst.ADD_MINE)
-	EventMgr.clearEvent(EventConst.MINE_BOOM)
+	self:addEnemy()
+
+	-- 注册炸弹事件，这里先全清一边ADD_MINE事件
 	EventMgr.registerEvent(EventConst.ADD_MINE, handler(self, self.addMine))
 	EventMgr.registerEvent(EventConst.MINE_BOOM, handler(self, self.mineBoom))
+end
+
+CharacterLayer.addEnemy = function(self, row, col)
+	row = row or 8
+	col = col or 2
+
+	local pos = Map.getPosByRowAndCol(row, col)
+	local enemy = BasicEnemy.new("enemy1")
+	enemy:pos(pos.x, pos.y)
+	enemy:stand()
+	self:addChild(enemy)
 end
 
 CharacterLayer.addMine = function(self)

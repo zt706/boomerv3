@@ -37,8 +37,7 @@ ObstacleLayer.ctor = function(self)
 	end
 
 	-- 添加爆炸事件处理
-	EventMgr.clearEvent(EventConst.OBSTACLE_BOOM)
-	EventMgr.registerEvent(EventConst.OBSTACLE_BOOM, handler(self, self.mineBoom))
+	EventMgr.registerEvent(EventConst.MINE_BOOM, handler(self, self.mineBoom))
 end
 
 ObstacleLayer.mineBoom = function(self, blocks)

@@ -63,8 +63,6 @@ BasicMine.boom = function(self)
 		-- 需要统计这几个方块上的角色和障碍物，然后对他们施加伤害
 		-- 角色就直接挂掉
 		EventMgr.triggerEvent(EventConst.MINE_BOOM, blocks)
-		-- 障碍物就清楚掉
-		EventMgr.triggerEvent(EventConst.OBSTACLE_BOOM, blocks)
 
 		-- 反注册监听事件
 		EventMgr.unregisterEvent(EventConst.PLAYER_MOVE, callback)

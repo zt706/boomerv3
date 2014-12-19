@@ -123,10 +123,12 @@ bool AppDelegate::applicationDidFinishLaunching()
     //register custom function
     //LuaStack* stack = engine->getLuaStack();
     //register_custom_function(stack->getLuaState());
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	lua_State* state = stack->getLuaState();
 	lua_getglobal(state, "_G");
 	register_all_zwutils(state);
 	lua_pop(state, 1);
+#endif
 
 #if (COCOS2D_DEBUG > 0) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8) && CC_USE_RUNTIME
     // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE

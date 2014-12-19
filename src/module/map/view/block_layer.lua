@@ -9,6 +9,12 @@ end)
 BlockLayer.ctor = function(self)
 	local blockInfos = Map.getBlockInfo() -- 地图阻挡信息
 	
+	local blockBatchNode = display.newBatchNode(Map.getBlockRes())
+	self:addChild(blockBatchNode)
+
+	local normalBatchNode = display.newBatchNode(Map.getNormalRes())
+	self:addChild(normalBatchNode)
+
 	for row = 1, MapConst.ROWS do
 		for col = 1, MapConst.COLS do
 			local x = (col - 1) * MapConst.BLOCK_WIDTH + MapConst.LEFT_PADDING
@@ -26,7 +32,11 @@ BlockLayer.ctor = function(self)
 			node:setScale(xScale, yScale)
 			node:align(display.LEFT_BOTTOM, x, y)
 
-			self:addChild(node)
+			if blockInfos[row][col] == 1 then
+				blockBatchNode:addChild(node)
+			else
+				normalBatchNode:addChild(node)
+			end
 
 			if DEBUG_MAP then
 				local text = string.format("(%d,%d)", col, row)

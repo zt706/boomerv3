@@ -4,7 +4,7 @@
 
 local InfoSkillConfig = {
 	["mine"] = {
-		["res"] = "mine.jpg",
+		["res"] = "mine.png",
 		["duration"] = 3.0, -- 技能CD的时间
 	},
 }

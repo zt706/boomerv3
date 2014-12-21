@@ -14,6 +14,11 @@ BasicMine.ctor = function(self, id)
 	end
 
 	local bg = display.newSprite(SkillButtonConst.PATH .. skillConfig.res)
+	local size = bg:getContentSize()
+	local xScale = MapConst.BLOCK_WIDTH / size.width
+	local yScale = MapConst.BLOCK_HEIGHT / size.height
+	bg:setScale(xScale, yScale)
+
 	self.bg = bg
 	self:add(bg)
 end

@@ -22,6 +22,10 @@ SkillButton.init = function(self, skillId, callback)
 
 	-- 假设意见从技能表中获取资源了
 	self.skillBg = display.newSprite(SkillButtonConst.PATH .. self.skillInfo.res) -- 底图
+	local size = self.skillBg:getContentSize()
+	local xScale = MapConst.BLOCK_WIDTH / size.width
+	local yScale = MapConst.BLOCK_HEIGHT / size.height
+	self.skillBg:setScale(xScale, yScale)
 	self:addChild(self.skillBg)
 
 	-- 这里设置一张技能遮罩，而且必须是从100开始转置的一张图

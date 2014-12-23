@@ -32,7 +32,7 @@ Updater._onPlatformInitialized = function(self, msg)
 			self:_checkUpdate()
 		end, 0.1)
 	else
-		-- TODO: 平台初始化失败处理
+		--!! 平台初始化失败处理
 	end
 end
 
@@ -85,7 +85,7 @@ Updater._downloadFile = function(self, url, requestType, waitTime)
 			-- 初始化网络失败
 			self._updateRetType = Launcher.UpdateRetType.NETWORK_ERROR
 
-			-- TODO: 弹窗提示用户检查网络
+			--!! 弹窗提示用户检查网络
 			self:_completeUpdate()
 		end
 	else
@@ -118,7 +118,7 @@ Updater._onResponse = function(self, event, requestType)
 		end
 	elseif event.name == "progress" then
 		if requestType == Launcher.RequestType.RES then
-			self:_onResourceProgress(event.dlnow)
+			self:_onResourceProgress(event.dltotal)
 		end
 	else
 		self._updateRetType = Launcher.UpdateRetType.NETWORK_ERROR
@@ -127,8 +127,8 @@ Updater._onResponse = function(self, event, requestType)
 end
 
 -- 资源更新进度
-Updater._onResourceProgress = function(self, dlnow)
-	self._currentFileDownloadedSize = dlnow
+Updater._onResourceProgress = function(self, dltotal)
+	self._currentFileDownloadedSize = dltotal
 	self:_calculateUpdateProgress()
 end
 
@@ -221,7 +221,7 @@ Updater._genUpdateFileList = function(self)
 					local fn = newFile.name .. Launcher.updateFileSuffix
 
 					if Launcher.checkFileWithMD5(self._path .. fn, newFile.code) then
-						table.insert(self._downloadedFileList, newFile)
+						table.insert(self._downloadedFileList, fn)
 					else
 						self._totalDownloadSize = self._totalDownloadSize + newFile.size
 						table.insert(self._updateFileList, newFile)
@@ -286,6 +286,7 @@ Updater._completeResourceFilesDownload = function(self)
 	-- 用新的文件列表替换旧的文件列表
 	local data = Launcher.readFile(self._newFlistFile)
 	local path = self._path .. Launcher.flistFileName
+
 	Launcher.writeFile(path, data)
 	self._fileList = Launcher.doFile(self._flistFile)
 

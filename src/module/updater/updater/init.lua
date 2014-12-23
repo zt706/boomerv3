@@ -357,20 +357,20 @@ end
 Launcher.getAppVersion = function()
 	local appVersion = 1
 
-	if Launcher.platform == "android" then
-		local javaMethodName = "getAppVersion"
-		local javaParams = {}
-		local javaMethodSid = "()l"
-		local ok, ret = Launcher.luaj.callStaticMethod(Launcher.javaClassName, javaMethodName, javaParams, javaMethodSig)
-		if ok then
-			appVersion = ret
-		end
-	elseif Launcher.platform == "ios" then
-		local ok, ret = Launcher.luaoc.callStaticMethod(Launcher.ocClassName, "getAppVersion")
-		if ok then
-			appVersion = ret
-		end
-	end
+	-- if Launcher.platform == "android" then
+	-- 	local javaMethodName = "getAppVersion"
+	-- 	local javaParams = {}
+	-- 	local javaMethodSid = "()l"
+	-- 	local ok, ret = Launcher.luaj.callStaticMethod(Launcher.javaClassName, javaMethodName, javaParams, javaMethodSig)
+	-- 	if ok then
+	-- 		appVersion = ret
+	-- 	end
+	-- elseif Launcher.platform == "ios" then
+	-- 	local ok, ret = Launcher.luaoc.callStaticMethod(Launcher.ocClassName, "getAppVersion")
+	-- 	if ok then
+	-- 		appVersion = ret
+	-- 	end
+	-- end
 
 	return appVersion
 end

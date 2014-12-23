@@ -16,15 +16,12 @@ Updater.ctor = function(self)
 	self.scene = nil
 	self._path = Launcher.writablePath .. "updates/"
 
-	if Launcher.platform ~= "android" and Launcher.platform ~= "ios" then
-		-- windows平台
-		fileUtils:addSearchPath(self._path)
-		fileUtils:addSearchPath("res/")
-	end
-
 	-- 间隔时间执行
 	Launcher.invoke(function()
-		Launcher.initializePlatform(handler(self, self._onPlatformInitialized))
+		self:_onPlatformInitialized("successed")
+		
+		--!! 目前没有移动平台sdk初始化的需求
+		-- Launcher.initializePlatform(handler(self, self._onPlatformInitialized))
 	end, 0.1)
 end
 
@@ -148,7 +145,6 @@ Updater._onUpdaterPackageCompleted = function(self, dataRecv)
 	local downloadMD5 = Launcher.fileDataMD5(dataRecv)
 	if localMD5 ~= downloadMD5 then
 		-- 更新更新器脚本打包
-		Launcher.mkDir(self._path .. "lib/")
 		local path = self._path  .. Launcher.updaterPackage
 		Launcher.writeFile(path, dataRecv)
 		require("main")

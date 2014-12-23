@@ -102,10 +102,10 @@ end
 Launcher = {}
 
 -- 服务器地址
-Launcher.server = "http://127.0.0.1/testupdate/"
+Launcher.server = "http://123.56.93.43/zwsatan/"
 
 -- CDN地址
-Launcher.cdn = "http://127.0.0.1/testupdate/"
+Launcher.cdn = "http://123.56.93.43/zwsatan/"
 
 -- 文件列表文件名
 Launcher.flistFileName = "flist"
@@ -154,12 +154,7 @@ Launcher.width = winSize.width
 Launcher.height = winSize.height
 Launcher.cx = Launcher.width / 2
 Launcher.cy = Launcher.height / 2
-
-if Launcher.platform ~= "windows" then
-	Launcher.writablePath = fileUtils:getWritablePath()
-else
-	Launcher.writablePath = ""
-end
+Launcher.writablePath = fileUtils:getWritablePath()
 
 if Launcher.platform == "android" then
 	-- Android方法调用

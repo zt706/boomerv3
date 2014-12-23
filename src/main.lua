@@ -8,15 +8,14 @@ end
 
 -- 设置查找目录的优先级
 -- updates > res
+local writablePath = cc.FileUtils:getInstance():getWritablePath()
 cc.FileUtils:getInstance():setPopupNotify(false)
 cc.FileUtils:getInstance():purgeCachedEntries()
-cc.FileUtils:getInstance():addSearchPath("updates/")
-cc.FileUtils:getInstance():addSearchPath("updates/res")
-cc.FileUtils:getInstance():addSearchPath("updates/src")
+cc.FileUtils:getInstance():addSearchPath(writablePath .. "updates/")
+cc.FileUtils:getInstance():addSearchPath(writablePath .. "updates/res")
+cc.FileUtils:getInstance():addSearchPath(writablePath .. "updates/src")
 cc.FileUtils:getInstance():addSearchPath("res/")
 cc.FileUtils:getInstance():addSearchPath("src/")
-
--- package.path = package.path .. ";src/"
 
 cc.LuaLoadChunksFromZIP("updater.zip")
 package.loaded["updater.UpdateScene"] = nil

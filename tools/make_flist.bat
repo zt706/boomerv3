@@ -1,0 +1,1 @@
+START /B %QUICK_V3_ROOT%quick/player/win32/player3.exe -workdir %~dp0makeflist -file main.lua -size 1024x768 -disable-write-debug-log -disable-console

@@ -1,0 +1,1 @@
+%QUICK_V3_ROOT%quick/bin/compile_scripts.bat -i %~dp0../src -o %~dp0../encode/src -m files -e xxtea_chunk -ek zwsatan

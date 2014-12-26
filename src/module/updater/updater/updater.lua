@@ -68,7 +68,7 @@ Updater._checkUpdate = function(self)
 	-- 请求最新版本的更新器脚本
 	print("--------------- start download updater.zip ---------------")
 	local url = Launcher.cdn .. Launcher.updaterPackage
-	self:_downloadFile(url, Launcher.RequestType.LAUNCHER, 30)
+	self:_downloadFile(url, Launcher.RequestType.LAUNCHER, 10)
 end
 
 -- 下载文件

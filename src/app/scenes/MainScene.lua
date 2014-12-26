@@ -4,8 +4,8 @@ end)
 
 function MainScene:ctor()
 	-- self:testDebugMap()
-	self:testSkill()
-	-- self:initMapLayer()
+	-- self:testSkill()
+	self:initMapLayer()
 end
 
 function MainScene:initMapLayer()

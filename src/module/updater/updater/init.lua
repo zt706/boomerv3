@@ -102,10 +102,10 @@ end
 Launcher = {}
 
 -- 服务器地址
-Launcher.server = "http://123.56.93.43/zwsatan/"
+Launcher.server = "http://120.24.75.91/zwsatan/"
 
 -- CDN地址
-Launcher.cdn = "http://123.56.93.43/zwsatan/"
+Launcher.cdn = "http://120.24.75.91/zwsatan/"
 
 -- 文件列表文件名
 Launcher.flistFileName = "flist"

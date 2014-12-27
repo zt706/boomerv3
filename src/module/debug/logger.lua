@@ -93,8 +93,8 @@ local echoWithColorEnd = function(logLevel)
 	if device.platform == "mac" then
 		-- mac 目前无法控制控制台颜色显示
 	elseif device.platform == "windows" then
-		-- 还原控制台输出为白底黑字
-		zw.ZWUtils:setConsoleColor(FRONT_COLORS.BLACK, BACK_COLORS.WHITE)
+		-- 还原控制台输出为黑底白字
+		zw.ZWUtils:setConsoleColor(FRONT_COLORS.WHITE, BACK_COLORS.BLACK)
 	end
 end
 

@@ -28,7 +28,7 @@ CharacterLayer.addEnemy = function(self, row, col)
 	local pos = Map.getPosByRowAndCol(row, col)
 	local enemy = BasicEnemy.new("enemy1")
 	enemy:pos(pos.x, pos.y)
-	enemy:stand()
+	enemy:start()
 	self:addChild(enemy)
 end
 

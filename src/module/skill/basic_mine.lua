@@ -46,16 +46,19 @@ BasicMine.boom = function(self)
 		self:removeChild(self.bg)
 
 		-- 这里会有一个很短的爆炸特效，这里获取周围包括自己的不是阻挡的方块
-		local blocks = Map.getAroundBlockByPos(self:getPosition())
+		local x, y = self:getPosition()
+		local blocks = Map.getAroundBlockByPos(x, y, true)
 		local rectNodes = {}
 		-- 给这几个方向添加一个黄色的方块，作为爆炸特效
 		for _, v in pairs(blocks) do
-			local rectNode = display.newRect(cc.rect(-20, -20, 40, 40), {fillColor = cc.c4f(1, 1, 0, 0.4)})
-			local pos = Map.getPosByRowAndCol(v.row, v.col)
-			rectNode:setPosition(pos.x, pos.y)
-			self:getParent():addChild(rectNode)
+			for _, block in pairs(v) do
+				local rectNode = display.newRect(cc.rect(-20, -20, 40, 40), {fillColor = cc.c4f(1, 1, 0, 0.4)})
+				local pos = Map.getPosByRowAndCol(block.row, block.col)
+				rectNode:setPosition(pos.x, pos.y)
+				self:getParent():addChild(rectNode)
 
-			rectNodes[#rectNodes + 1] = rectNode
+				rectNodes[#rectNodes + 1] = rectNode
+			end
 		end
 
 		self:getParent():performWithDelay(function()
@@ -87,7 +90,7 @@ BasicMine.montiorPlayerMove = function(self, playerBoundingBox)
 		return
 	end
 
-	print("玩家离开包围盒")
+	Logger.info("玩家离开包围盒")
 	-- 玩家一旦离开这个炸弹方块，炸弹方块设置阻挡为1
 	Map.setBlockByRowAndCol(mineRow, mineCol)
 end

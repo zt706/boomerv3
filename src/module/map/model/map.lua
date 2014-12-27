@@ -57,6 +57,10 @@ end
 
 -- 传入指定行列，返回该方块的阻挡信息
 Map.getBlockByRowAndCol = function(row, col)
+	if not Map.checkRowAndCol(row, col) then
+		return false
+	end
+
 	return (Map.blockInfo[row][col] ~= 0)
 end
 
@@ -131,29 +135,36 @@ Map.getAroundBlockByPos = function(x, y, needBlock, depth)
 
 	local blocks = {}
 	local row, col = Map.getRowAndColByPos(x, y)
-	blocks[0] = {row = row, col = col}
-	if not needBlock then
-		if Map.blockInfo[row + 1][col] ~= 1 then
-			blocks[#blocks + 1] = {row = row + 1, col = col}
-		end
-
-		if Map.blockInfo[row - 1][col] ~= 1 then
-			blocks[#blocks + 1] = {row = row - 1, col = col}
-		end
-
-		if Map.blockInfo[row][col + 1] ~= 1 then
-			blocks[#blocks + 1] = {row = row, col = col + 1}
-		end
-
-		if Map.blockInfo[row][col - 1] ~= 1 then
-			blocks[#blocks + 1] = {row = row, col = col - 1}
-		end		
-	else
-		blocks[1] = {row = row + 1, col = col}
-		blocks[2] = {row = row - 1, col = col}
-		blocks[3] = {row = row, col = col + 1}
-		blocks[4] = {row = row, col = col - 1}
+	
+	if needBlock then
+		-- middle表示自己，本来打算用self，觉得不妥当，还是用中间算了
+		blocks["middle"] = {
+			{row = row, col = col}
+		}
 	end
+
+	local getBlocks = function(row, col, rowInc, colInc)
+		local tmpBlocks = {}
+		local tmpRow, tmpCol = row, col
+
+		for i = 1, depth do
+			tmpRow = tmpRow + rowInc
+			tmpCol = tmpCol + colInc
+
+			if not Map.getBlockByRowAndCol(tmpRow, tmpCol) then
+				tmpBlocks[#tmpBlocks + 1] = {row = tmpRow, col = tmpCol}
+			else
+				break
+			end
+		end
+
+		return tmpBlocks
+	end
+
+	blocks["up"] = getBlocks(row, col, 1, 0)
+	blocks["down"] = getBlocks(row, col, -1, 0)
+	blocks["right"] = getBlocks(row, col, 0, 1)
+	blocks["left"] = getBlocks(row, col, 0, -1)
 
 	return blocks
 end
@@ -166,7 +177,9 @@ end
 -- 重置指定方块群的阻挡信息
 Map.resetBlocksByRowsAndCols = function(blocks)
 	for _, v in pairs(blocks) do
-		Map.blockInfo[v.row][v.col] = 0
+		for _, block in pairs(v) do
+			Map.blockInfo[block.row][block.col] = 0
+		end
 	end
 end
 

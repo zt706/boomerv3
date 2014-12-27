@@ -9,7 +9,7 @@ DEBUG_FPS = true
 DEBUG_MEM = false
 
 -- 显示地图上的方块行列号
-DEBUG_MAP = false
+DEBUG_MAP = true
 
 -- load deprecated API
 LOAD_DEPRECATED_API = false

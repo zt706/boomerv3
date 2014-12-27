@@ -5,4 +5,4 @@
 5、上传服务器
 
 上传文件命令：
-pscp.exe -r ..\encode root@120.24.75.91:/usr/share/nginx/html/zwsatan
+pscp.exe -r ..\encode root@120.24.75.91:/alidata/www/default/zwsatan

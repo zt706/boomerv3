@@ -55,11 +55,7 @@ Player.move = function(self, dir)
 		y = y - PlayerConst.SPEED
 	end
 
-	local getPlayerBoundingBox = function(x, y)
-		return cc.rect(x - self.size.width / 2, y - self.size.height / 2, self.size.width, self.size.height)
-	end
-
-	local newBox = getPlayerBoundingBox(x, y)
+	local newBox = self:getBoundingBox(x, y)
 	local row, col = Map.getRowAndColByPos(self:getPosition())
 
 	-- 任何一个前行的方向其实只有4个地图块与其相关
@@ -194,6 +190,15 @@ Player.stand = function(self, params)
 	self.animation:playAction(AnimationConst.ACTION_STAND, self.curDir, {onComplete = self.standOnComplete})
 
 	self.status = "stand"
+end
+
+-- 获取包围盒
+Player.getBoundingBox = function(self, x, y)
+	if not x and not y then
+		x, y = self:getPosition()
+	end
+
+	return cc.rect(x - self.size.width / 2, y - self.size.height / 2, self.size.width, self.size.height)
 end
 
 return Player

@@ -34,9 +34,11 @@ end
 BasicEnemy.start = function(self)
 	local result, dir, length, block = self:generateDestinationPos()
 	if not result then
+		transition.stopTarget(self)
 		self:stand()
 
 		-- 这里还需做些事
+		-- 这里应该有做判断，判断是否地方可以走
 		return
 	end
 
@@ -50,18 +52,6 @@ BasicEnemy.start = function(self)
 end
 
 BasicEnemy.move = function(self, dir)
-	local x, y = self:getPosition()
-	
-	if dir == "left" then
-		x = x - BasicEnemyConst.SPEED
-	elseif dir == "right" then
-		x = x + BasicEnemyConst.SPEED
-	elseif dir == "up" then
-		y = y + BasicEnemyConst.SPEED
-	elseif dir == "down" then
-		y = y - BasicEnemyConst.SPEED
-	end
-
 	-- 播放动画
 	if self.curDir ~= AnimationConst.DIRS_MAP[dir] or self.status ~= "move" then
 		self.curDir = AnimationConst.DIRS_MAP[dir]
@@ -82,6 +72,67 @@ BasicEnemy.move = function(self, dir)
 	})
 
 	self:runAction(sequence)
+end
+
+-- 函数名有待斟酌，这里实际上并不一定掉头，而是选择剩余3个方向中可走的方向
+BasicEnemy.moveOpposite = function(self)
+	if self.isMovingOpposite then
+		return
+	end
+
+	self.isMovingOpposite = true
+
+	local x, y = self:getPosition()
+	local blocks = Map.getAroundBlockByPos(x, y, false, 20)
+	blocks[self.destination.dir] = nil
+	for k, v in pairs(blocks) do
+		if #v > 0 then
+			if #v > 1 then
+				self.destination = {
+					pos = Map.getPosByRowAndCol(v[#v].row, v[#v].col),
+					length = #v,
+					dir = k,
+				}
+				transition.stopTarget(self)
+				self:move(k)
+			else
+				transition.stopTarget(self)
+				self:stand()
+			end
+
+			return
+		end
+	end
+
+	transition.stopTarget(self)
+	self:stand()
+end
+
+BasicEnemy.shouldBeOpposite = function(self, mine)
+	local mineX, mineY = mine:getPosition()
+	local selfX, selfY = self:getPosition()
+	local minePos = {x = mineX, y = mineY}
+	local selfPos = {x = selfX, y = selfY}
+print("~~~~~~~~", mineX, mineY, selfX, selfY)
+	if selfPos.x >= minePos.x and self.destination.dir == "right" then
+		return false
+	elseif selfPos.x <= minePos.x and self.destination.dir == "left" then
+		return false
+	elseif selfPos.y >= minePos.y and self.destination.dir == "up" then
+		return false
+	elseif selfPos.y <= minePos.y and self.destination.dir == "down" then
+		return false
+	end
+
+	return true
+end
+
+BasicEnemy.getMovingOpposite = function(self)
+	return self.isMovingOpposite
+end
+
+BasicEnemy.resetMovingOpposite = function(self)
+	self.isMovingOpposite = false
 end
 
 BasicEnemy.attack = function(self, params)

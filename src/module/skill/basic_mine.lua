@@ -23,6 +23,11 @@ BasicMine.ctor = function(self, id)
 	self:add(bg)
 end
 
+BasicMine.getBoundingBox = function(self)
+	local x, y = self:getPosition()
+	return cc.rect(x - MapConst.BLOCK_WIDTH / 2, y - MapConst.BLOCK_HEIGHT / 2, MapConst.BLOCK_WIDTH, MapConst.BLOCK_HEIGHT)	
+end
+
 BasicMine.boom = function(self)
 	-- 暂时用一大一小表示爆炸效果
 	local scaleSmallerAction = cc.ScaleTo:create(0.2, 0.6)

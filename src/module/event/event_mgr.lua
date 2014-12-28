@@ -65,7 +65,10 @@ EventMgr.triggerEvent = function(eventType, ...)
 	EventMgr.events = EventMgr.events or {}
 	local eventCallbacks = clone(EventMgr.events[eventType])
 	if not eventCallbacks or #eventCallbacks == 0 then
-		Logger.warn(string.format("事件：没有对应的回调函数", eventType))
+		-- 这里的打印造成了mac上的明显卡顿，暂时处理为windows上打印
+		if device.platform == "windows" then
+			Logger.warn(string.format("事件：没有对应的回调函数", eventType))
+		end
 		return
 	end
 

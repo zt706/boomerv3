@@ -9,7 +9,7 @@ function MainScene:ctor()
 end
 
 function MainScene:initMapLayer()
-	local mapLayer = MapLayer.new("1")
+	local mapLayer = MapLayer.new("3")
 	self:addChild(mapLayer)
 end
 

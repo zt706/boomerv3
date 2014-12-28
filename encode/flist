@@ -1,6 +1,6 @@
 local flist = {
 	appVersion = 1,
-	version = "1.0.11",
+	version = "1.0.12",
 	dirPaths = {
 		{name = "res"},
 		{name = "res/char"},
@@ -83,11 +83,11 @@ local flist = {
 		{name = "res/module/map/obstacle.png", code = "14090d722417181a0518d32e0ab50967", size = 10218},
 		{name = "res/module/ui/button/ControlWheel.png", code = "67aa858fe35e6ed23ffe0e29ffe9fe24", size = 63580},
 		{name = "res/module/ui/button/SkillMask.png", code = "87a6ab3c4a30218718fa37d29eaa93b3", size = 937},
-		{name = "res/module/ui/button/TinyCircle.png", code = "9aaff28f881013852f4b2e19e3258d1c", size = 8566},
+		{name = "res/module/ui/button/TinyCircle.png", code = "027bf48376bea90344f3d9daa12eae9a", size = 56555},
 		{name = "res/module/ui/message_box/tip_box.png", code = "9667a4763c65b41bf42e6b3f0e1c29b1", size = 2788},
 		{name = "res/skill/mine.png", code = "eeaa735249a5f33d88c5ccee28fac9b7", size = 38612},
 		{name = "src/app/MyApp.lua", code = "1e1c17323f1b05d517baaab44add1619", size = 773},
-		{name = "src/app/scenes/MainScene.lua", code = "a10bdb62f0cb1fef2f13210f541e3a17", size = 3001},
+		{name = "src/app/scenes/MainScene.lua", code = "33aa27f97639d80c013a5813aac69fa2", size = 2929},
 		{name = "src/cocos/cocos2d/bitExtend.lua", code = "abf0370a57d6b1a41c816c385152f663", size = 3489},
 		{name = "src/cocos/cocos2d/Cocos2d.lua", code = "f0ff33eb70ebf45972a361308b49feba", size = 18641},
 		{name = "src/cocos/cocos2d/Cocos2dConstants.lua", code = "daa59c1bb47efe2a4c5af21b02f967ac", size = 25445},

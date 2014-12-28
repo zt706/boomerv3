@@ -21,7 +21,10 @@ JoyStickButton.init = function(self)
 
 	-- 添加光圈，光圈坐标位于地图中央
 	self.tinyCircle = display.newSprite(JoyStickButtonConst.CIRCLE_PATH)
-	self.tinyCircle:setContentSize(JoyStickButtonConst.CIRCLE_WIDTH, JoyStickButtonConst.CIRCLE_HEIGHT)
+	local xScale = JoyStickButtonConst.CIRCLE_WIDTH / self.tinyCircle:getContentSize().width
+	local yScale = JoyStickButtonConst.CIRCLE_HEIGHT / self.tinyCircle:getContentSize().height
+	self.tinyCircle:setScale(xScale, yScale)
+	display.align(self.tinyCircle, display.CENTER)
 	self:addChild(self.tinyCircle)
 
 	-- 添加4个方向键

@@ -17968,11 +17968,11 @@ int lua_cocos2dx_ui_Helper_getSubStringOfUTF8String(lua_State* tolua_S)
     if (argc == 3)
     {
         std::string arg0;
-        unsigned long arg1;
-        unsigned long arg2;
+        unsigned int arg1;
+        unsigned int arg2;
         ok &= luaval_to_std_string(tolua_S, 2,&arg0, "ccui.Helper:getSubStringOfUTF8String");
-        ok &= luaval_to_ulong(tolua_S, 3, &arg1, "ccui.Helper:getSubStringOfUTF8String");
-        ok &= luaval_to_ulong(tolua_S, 4, &arg2, "ccui.Helper:getSubStringOfUTF8String");
+        ok &= luaval_to_uint32(tolua_S, 3,&arg1, "ccui.Helper:getSubStringOfUTF8String");
+        ok &= luaval_to_uint32(tolua_S, 4,&arg2, "ccui.Helper:getSubStringOfUTF8String");
         if(!ok)
         {
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_ui_Helper_getSubStringOfUTF8String'", nullptr);

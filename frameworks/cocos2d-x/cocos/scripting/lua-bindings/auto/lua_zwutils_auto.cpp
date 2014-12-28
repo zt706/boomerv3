@@ -1,5 +1,5 @@
 #include "lua_zwutils_auto.hpp"
-#include "ZWUtils.h"
+#include "../../runtime-src/Classes/ZWUtils.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 

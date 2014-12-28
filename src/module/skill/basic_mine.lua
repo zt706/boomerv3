@@ -52,7 +52,7 @@ BasicMine.boom = function(self)
 
 		-- 这里会有一个很短的爆炸特效，这里获取周围包括自己的不是阻挡的方块
 		local x, y = self:getPosition()
-		local blocks = Map.getAroundBlockByPos(x, y, true)
+		local blocks = Map.getAroundBlockByPos(x, y, {needSelf = true, needObstacle = true})
 		local rectNodes = {}
 		-- 给这几个方向添加一个黄色的方块，作为爆炸特效
 		for _, v in pairs(blocks) do

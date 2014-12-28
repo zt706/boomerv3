@@ -181,6 +181,14 @@ Player.die = function(self, params)
 	self.status = "die"
 end
 
+Player.isAlive = function(self)
+	return self.status ~= "die"
+end
+
+Player.isStand = function(self)
+	return self.status == "stand"
+end
+
 -- 站立就取攻击的第一张图
 Player.stand = function(self, params)
 	params = params or {}

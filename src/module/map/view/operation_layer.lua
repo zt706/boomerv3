@@ -18,10 +18,17 @@ OperationLayer.ctor = function(self)
 	end)
 	skillButton:setPosition(display.right - 100, display.bottom + 100)
 	self:addChild(skillButton)
+	self.skillButton = skillButton
+
+	EventMgr.registerEvent(EventConst.PLAYER_DIE, handler(self, self.skillDisabled))
 end
 
 OperationLayer.setControlNode = function(self, controlNode)
 	self.joyStick:setControlNode(controlNode)
+end
+
+OperationLayer.skillDisabled = function(self)
+	self.skillButton:setDisabled(true)
 end
 
 return OperationLayer

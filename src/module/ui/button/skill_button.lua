@@ -62,4 +62,8 @@ SkillButton.startCD = function(self)
 	self.mask:runAction(transition.sequence({action1, action2}))
 end
 
+SkillButton.setDisabled = function(self, isDisabled)
+	self:setTouchEnabled(false)
+end
+
 return SkillButton

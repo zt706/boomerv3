@@ -19,5 +19,6 @@ EventConst.PRIO_LOW = 1
 EventConst.ADD_MINE = "addMine"
 EventConst.MINE_BOOM = "mineBoom"
 EventConst.PLAYER_MOVE = "playerMove"
+EventConst.PLAYER_DIE = "playerDie"
 
 return EventConst

@@ -56,12 +56,17 @@ Map.getLeftBottomPosByRowAndCol = function(row, col)
 end
 
 -- 传入指定行列，返回该方块的阻挡信息
-Map.getBlockByRowAndCol = function(row, col)
+-- needObstacle默认为false，表示障碍物也是阻挡，为true表示忽略障碍物
+Map.getBlockByRowAndCol = function(row, col, needObstacle)
 	if not Map.checkRowAndCol(row, col) then
 		return false
 	end
 
-	return (Map.blockInfo[row][col] ~= 0)
+	if needObstacle then
+		return (Map.blockInfo[row][col] == 1)
+	else
+		return (Map.blockInfo[row][col] ~= 0)
+	end
 end
 
 -- 传入坐标，返回该方块的行列
@@ -78,9 +83,10 @@ Map.getRowAndColByPos = function(x, y)
 end
 
 -- 传入坐标，返回该方块的阻挡信息
-Map.getBlockByPos = function(x, y)
+-- needObstacle默认为false，表示障碍物也是阻挡，为true表示忽略障碍物
+Map.getBlockByPos = function(x, y, needObstacle)
 	local row, col = Map.getRowAndColByPos(x, y)
-	return Map.getBlockByRowAndCol(row, col)
+	return Map.getBlockByRowAndCol(row, col, needObstacle)
 end
 
 -- 传入指定的行列，返回该方块的包围盒
@@ -125,18 +131,21 @@ end
 
 --[[
 	获取指定坐标周围上下左右和自己5个方块
-	needBlock表示是否需要返回阻挡方块，默认不返回
+	needSelf表示是否需要返回阻挡方块，默认不返回
+	needObstacle表示是否需要返回障碍物方块，默认不反悔
 	depth表示深度，默认为1，表示取上下左右几个方块（2为各取2个），即一共返回最多9个方块
 	这里一定会返回自己那个方块，无论是不是阻挡
 --]]
-Map.getAroundBlockByPos = function(x, y, needBlock, depth)
-	needBlock = needBlock and true or false
-	depth = depth or 1
+Map.getAroundBlockByPos = function(x, y, params)
+	params = params or {}
+	local needSelf = params.needSelf and true or false
+	local needObstacle = params.needObstacle and true or false
+	local depth = params.depth or 1
 
 	local blocks = {}
 	local row, col = Map.getRowAndColByPos(x, y)
 	
-	if needBlock then
+	if needSelf then
 		-- middle表示自己，本来打算用self，觉得不妥当，还是用中间算了
 		blocks["middle"] = {
 			{row = row, col = col}
@@ -151,7 +160,7 @@ Map.getAroundBlockByPos = function(x, y, needBlock, depth)
 			tmpRow = tmpRow + rowInc
 			tmpCol = tmpCol + colInc
 
-			if not Map.getBlockByRowAndCol(tmpRow, tmpCol) then
+			if not Map.getBlockByRowAndCol(tmpRow, tmpCol, needObstacle) then
 				tmpBlocks[#tmpBlocks + 1] = {row = tmpRow, col = tmpCol}
 			else
 				break

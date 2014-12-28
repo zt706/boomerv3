@@ -14,7 +14,7 @@ end
 
 BasicEnemy.generateDestinationPos = function(self)
 	local x, y = self:getPosition()
-	local blocks = Map.getAroundBlockByPos(x, y, false, 20)
+	local blocks = Map.getAroundBlockByPos(x, y, {depth = 20})
 	local maxLength, maxDir = 0, "none"
 
 	for k, v in pairs(blocks) do
@@ -34,11 +34,7 @@ end
 BasicEnemy.start = function(self)
 	local result, dir, length, block = self:generateDestinationPos()
 	if not result then
-		transition.stopTarget(self)
 		self:stand()
-
-		-- 这里还需做些事
-		-- 这里应该有做判断，判断是否地方可以走
 		return
 	end
 
@@ -80,51 +76,73 @@ BasicEnemy.moveOpposite = function(self)
 		return
 	end
 
+	transition.stopTarget(self)
+	
 	self.isMovingOpposite = true
 
 	local x, y = self:getPosition()
-	local blocks = Map.getAroundBlockByPos(x, y, false, 20)
+	local blocks = Map.getAroundBlockByPos(x, y, {depth = 20})
 	blocks[self.destination.dir] = nil
+
 	for k, v in pairs(blocks) do
 		if #v > 0 then
-			if #v > 1 then
-				self.destination = {
-					pos = Map.getPosByRowAndCol(v[#v].row, v[#v].col),
-					length = #v,
-					dir = k,
-				}
-				transition.stopTarget(self)
-				self:move(k)
-			else
-				transition.stopTarget(self)
-				self:stand()
-			end
+			self.destination = {
+				pos = Map.getPosByRowAndCol(v[#v].row, v[#v].col),
+				length = #v,
+				dir = k,
+			}
+
+			self:move(k)
 
 			return
 		end
 	end
 
-	transition.stopTarget(self)
 	self:stand()
+end
+
+local oldStand = BasicEnemy.stand
+BasicEnemy.stand = function(self, params)
+	transition.stopTarget(self)
+	oldStand(self, params)
 end
 
 BasicEnemy.shouldBeOpposite = function(self, mine)
 	local mineX, mineY = mine:getPosition()
 	local selfX, selfY = self:getPosition()
-	local minePos = {x = mineX, y = mineY}
-	local selfPos = {x = selfX, y = selfY}
-print("~~~~~~~~", mineX, mineY, selfX, selfY)
-	if selfPos.x >= minePos.x and self.destination.dir == "right" then
+
+	if selfX >= mineX and self.destination.dir == "right" then
 		return false
-	elseif selfPos.x <= minePos.x and self.destination.dir == "left" then
+	elseif selfX <= mineX and self.destination.dir == "left" then
 		return false
-	elseif selfPos.y >= minePos.y and self.destination.dir == "up" then
+	elseif selfY >= mineY and self.destination.dir == "up" then
 		return false
-	elseif selfPos.y <= minePos.y and self.destination.dir == "down" then
+	elseif selfY <= mineY and self.destination.dir == "down" then
 		return false
 	end
 
 	return true
+end
+
+BasicEnemy.hasMineAround = function(self, mine)
+	if not mine then
+		return false
+	end
+
+	local selfX, selfY = self:getPosition()
+	local blocks = Map.getAroundBlockByPos(selfX, selfY)
+	local mineX, mineY = mine:getPosition()
+	local mineRow, mineCol = Map.getRowAndColByPos(mineX, mineY)
+
+	for _, v in pairs(blocks) do
+		for _, block in pairs(v) do
+			if block.row == mineRow and block.col == mineCol then
+				return true
+			end
+		end
+	end
+
+	return false
 end
 
 BasicEnemy.getMovingOpposite = function(self)

@@ -42,16 +42,18 @@ end
 
 ObstacleLayer.mineBoom = function(self, blocks)
 	-- 获取所有的障碍物，结算障碍物，如果障碍物被炸到，那么就清空它，然后置该处阻挡为0
-	for _, block in pairs(blocks) do
-		for k, v in pairs(self.obstacleInfos) do
-			if block.row == v.row and block.col == v.col then
-				Logger.info("障碍物被炸了")
-				self:removeChild(v.node)
+	for _, v in pairs(blocks) do
+		for _, block in pairs(v) do
+			for k, obstacle in pairs(self.obstacleInfos) do
+				if block.row == obstacle.row and block.col == obstacle.col then
+					Logger.info("障碍物被炸了")
+					self:removeChild(obstacle.node)
 
-				-- 重置这里的阻挡信息
-				Map.resetBlockByRowAndCol(v.row, v.col)
+					-- 重置这里的阻挡信息
+					Map.resetBlockByRowAndCol(obstacle.row, obstacle.col)
 
-				self.obstacleInfos[k] = nil
+					self.obstacleInfos[k] = nil
+				end
 			end
 		end
 	end

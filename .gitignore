@@ -251,4 +251,7 @@ frameworks/cocos2d-x/tools/missing-tools.txt
 frameworks/runtime-src/Classes/quick-src
 frameworks/runtime-src/Classes/runtime
 frameworks/runtime-src/proj.*
-runtime/*
+runtime/android/*
+runtime/win32/boomerv3.ilk
+runtime/win32/boomerv3.pdb
+runtime/win32/PrebuiltRuntimeLua.exe

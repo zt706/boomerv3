@@ -5,14 +5,14 @@
 local Map = {}
 
 Map.init = function(mapId)
-	mapId = mapId or "1" -- 默认就是第一张地图
+	mapId = mapId or "1" 						-- 默认就是第一张地图
 
 	Map.mapId = mapId
-	Map.blockRes = InfoMap.blockRes -- 方块贴图信息
+	Map.blockRes = InfoMap.blockRes 			-- 方块贴图信息
 	Map.mapConfig = InfoMap[mapId]
-	Map.blockInfo = InfoMap[mapId].blocks -- 地图阻挡信息
+	Map.blockInfo = InfoMap[mapId].blocks 		-- 地图阻挡信息
 
-	Map.createMapPointsInfo() -- 这个其实应该生成一次就好了，坐标是固定的
+	Map.createMapPointsInfo() 					-- 这个其实应该生成一次就好了，坐标是固定的
 end
 
 -- 生成地图的坐标点，这个其实自动处理就好了
